@@ -26,6 +26,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -49,6 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -67,7 +69,7 @@ class MainActivity : ComponentActivity() {
                         .verticalScroll(ScrollState(1), enabled = true),
                     color = Color.White
                 ) {
-                    signUp()
+                    SignUp()
                 }
             }
         }
@@ -196,7 +198,7 @@ fun Login() {
 }
 
 val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
-@Composable fun signUp(){
+@Composable fun SignUp(){
 
     Column (
         modifier = Modifier.fillMaxSize()
@@ -453,6 +455,32 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
 
 }
 
+@Composable fun MyTrips(){
+
+    Column (
+        modifier = Modifier.fillMaxSize()
+    ) {
+
+        Card () {
+            Column {
+                Column ( ){
+                    Card () {
+
+                    }
+                    Text(text = "Susanna Hoffs")
+                }
+                Column {
+                    Row {
+                        Icon(Icons.Filled.LocationOn, contentDescription = "Ícone de localização")
+                        Text(text = "You're in Paris")
+                    }
+                }
+            }
+        }
+
+    }
+}
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -464,8 +492,18 @@ fun LoginPreview() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun signUpPreview() {
+fun SignUpPreview() {
     MyTripsTheme {
-        signUp()
+        SignUp()
     }
 }
+
+/*
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun MyTripsPreview() {
+    MyTripsTheme {
+        MyTrips()
+    }
+}
+*/
