@@ -490,6 +490,7 @@ fun LoginPreview() {
     }
 }
 
+//não mostra a página inteira, precisa rolar a tela
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun SignUpPreview() {
