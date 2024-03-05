@@ -31,6 +31,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -59,10 +62,12 @@ class MainActivity : ComponentActivity() {
             MyTripsTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize().verticalScroll(ScrollState(1),enabled = true),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(ScrollState(1), enabled = true),
                     color = Color.White
                 ) {
-                    Login()
+                    signUp()
                 }
             }
         }
@@ -71,6 +76,8 @@ class MainActivity : ComponentActivity() {
 
 val purple = 0xffCF06F0
 val gray = 0xffA09C9C
+val lightGray = 0xF6F6F6ff;
+
 
 @Composable
 fun Login() {
@@ -220,7 +227,9 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
         }
 
         Row (
-            modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             Card (
@@ -229,7 +238,7 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
                     .offset(x = 10.dp),
                 shape = RoundedCornerShape(50.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White
+                    containerColor = Color(lightGray)
                 ),
                 border = BorderStroke(2.dp, gradiente)
             ){
@@ -273,7 +282,11 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
                     unfocusedLeadingIconColor = Color(purple),
                     unfocusedContainerColor = Color.White,
                     unfocusedBorderColor = Color(purple),
-                    unfocusedLabelColor = Color.Black
+                    unfocusedLabelColor = Color.Black,
+                    focusedLeadingIconColor = Color(purple),
+                    focusedContainerColor = Color.White,
+                    focusedBorderColor = Color(purple),
+                    focusedLabelColor = Color.Black
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -297,7 +310,11 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
                     unfocusedLeadingIconColor = Color(purple),
                     unfocusedContainerColor = Color.White,
                     unfocusedBorderColor = Color(purple),
-                    unfocusedLabelColor = Color.Black
+                    unfocusedLabelColor = Color.Black,
+                    focusedLeadingIconColor = Color(purple),
+                    focusedContainerColor = Color.White,
+                    focusedBorderColor = Color(purple),
+                    focusedLabelColor = Color.Black
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -321,7 +338,11 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
                     unfocusedLeadingIconColor = Color(purple),
                     unfocusedContainerColor = Color.White,
                     unfocusedBorderColor = Color(purple),
-                    unfocusedLabelColor = Color.Black
+                    unfocusedLabelColor = Color.Black,
+                    focusedLeadingIconColor = Color(purple),
+                    focusedContainerColor = Color.White,
+                    focusedBorderColor = Color(purple),
+                    focusedLabelColor = Color.Black
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -331,6 +352,7 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
             )
             OutlinedTextField(
                 value = "**********",
+                enabled = true,
                 label = {
                     Text(text = "Password",
                         modifier = Modifier
@@ -345,7 +367,11 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
                     unfocusedLeadingIconColor = Color(purple),
                     unfocusedContainerColor = Color.White,
                     unfocusedBorderColor = Color(purple),
-                    unfocusedLabelColor = Color.Black
+                    unfocusedLabelColor = Color.Black,
+                    focusedLeadingIconColor = Color(purple),
+                    focusedContainerColor = Color.White,
+                    focusedBorderColor = Color(purple),
+                    focusedLabelColor = Color.Black
                 ),
                 shape = RoundedCornerShape(14.dp),
                 modifier = Modifier
@@ -368,7 +394,16 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
                 colors = CardDefaults.cardColors(
                     containerColor = Color(0x0000000)
                 )
-            ){}
+            ){
+                Checkbox(checked = false, onCheckedChange = {/**/},
+                    modifier = Modifier.size(30.dp),
+                    colors = CheckboxDefaults.colors(
+                        uncheckedColor = Color.White,
+                        checkedColor = Color.White,
+                        checkmarkColor = Color(purple)
+                    )
+                )
+            }
             Text(
                 text = "Over 18?",
                 fontFamily = Poppins,
