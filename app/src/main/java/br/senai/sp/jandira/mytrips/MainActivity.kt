@@ -14,6 +14,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -480,7 +481,33 @@ fun Login() {
 
 }
 
+data class Trip(
+    val id: Int,
+    val nome: String,
+    val descricao: String,
+    val ano: String,
+    val periodo: String,
+    val image : Int
+)
 
+val tripList = listOf(
+    Trip(
+        1,
+        "London",
+        "London is the capital and largest city of  the United Kingdom, with a population of just under 9 million.",
+        "2019",
+        "18 Feb - 21 Feb",
+        R.drawable.london
+    ),
+    Trip(
+        2,
+        "Porto",
+        "Porto is the second largest city in Portugal, the capital of the Porto District and one of the Iberian Peninsula's major urban areas.",
+        "2022",
+        "16 Jun - 26 Jun",
+        R.drawable.porto
+    )
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun MyTripsPage(){
@@ -602,9 +629,111 @@ fun Login() {
 
             ) {}
             Text(text = "Past Trips", modifier = Modifier.padding(12.dp))
-            Column (modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)){
+            LazyColumn(modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+                contentPadding = PaddingValues(12.dp)
+            ){
+
+                items(tripList) { trip ->
+                    PastTripCard(local = trip.nome, ano = trip.ano, descricao = trip.descricao, periodo = trip.periodo, imagem = trip.image)
+                }
+            }
+      //      Column (modifier = Modifier
+     //           .fillMaxWidth()
+       //         .padding(8.dp)){
+     //       }
+
+        }
+    }
+}
+
+@Composable
+fun PastTripCard(local: String, ano: String, descricao: String, periodo: String, imagem:Int){
+    Card (
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        modifier = Modifier
+            .height(220.dp)
+            .fillMaxWidth()
+            .padding(bottom = 10.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )
+    ) {
+        Column (modifier = Modifier
+            .fillMaxSize()
+            .padding(6.dp)) {
+            Box(modifier = Modifier
+                .height(120.dp)
+                .fillMaxWidth()){
+                Image(  painter = painterResource(id = imagem),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                    contentDescription = "")
+            }
+            Column(
+                modifier = Modifier.padding(end = 10.dp)
+            ){
+                Text(   text = "$local, $ano",
+                    fontFamily = Poppins,
+                    fontSize = 14.sp,
+                    color = Color(purple),
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+                Text(   text = descricao,
+                    fontSize = 10.5.sp,
+                    lineHeight = 12.sp,
+                    fontFamily = Poppins,
+                    color = Color.Gray,
+                    modifier = Modifier
+                        .padding(vertical = 4.dp)
+                        .fillMaxWidth()
+                )
+                Text(   text = periodo,
+                    fontSize = 10.sp,
+                    fontFamily = Poppins,
+                    textAlign = TextAlign.End,
+                    color = Color(purple),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+        }
+    }
+}
+
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun LoginPreview() {
+    MyTripsTheme {
+        Login()
+    }
+}
+
+//não mostra a página inteira, precisa rolar a tela
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun SignUpPreview() {
+    MyTripsTheme {
+        SignUp()
+    }
+}
+
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun MyTripsPreview() {
+    MyTripsTheme {
+        MyTripsPage()
+    }
+}
+
+
+
+/*
                 Card (
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White
@@ -654,87 +783,4 @@ fun Login() {
 
                     }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun PastTripCard(){
-    Card (
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        modifier = Modifier
-            .height(220.dp)
-            .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 10.dp
-        )
-    ) {
-        Column (modifier = Modifier
-            .fillMaxSize()
-            .padding(6.dp)) {
-            Box(modifier = Modifier
-                .height(120.dp)
-                .fillMaxWidth()){
-                Image(  painter = painterResource(id = R.drawable.london),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize(),
-                    contentDescription = "")
-            }
-            Column(
-                modifier = Modifier.padding(end = 10.dp)
-            ){
-                Text(   text = "London, 2019",
-                    fontFamily = Poppins,
-                    fontSize = 14.sp,
-                    color = Color(purple),
-                    modifier = Modifier.padding(vertical = 4.dp)
-                )
-                Text(   text = "London is the capital and largest city of  the United Kingdom, with a population of just under 9 million.",
-                    fontSize = 10.5.sp,
-                    lineHeight = 12.sp,
-                    fontFamily = Poppins,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(vertical = 4.dp).fillMaxWidth()
-                )
-                Text(   text = "18 Feb - 21 Feb",
-                    fontSize = 10.sp,
-                    fontFamily = Poppins,
-                    textAlign = TextAlign.End,
-                    color = Color(purple),
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-
-        }
-    }
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun LoginPreview() {
-    MyTripsTheme {
-        Login()
-    }
-}
-
-//não mostra a página inteira, precisa rolar a tela
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun SignUpPreview() {
-    MyTripsTheme {
-        SignUp()
-    }
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun MyTripsPreview() {
-    MyTripsTheme {
-        MyTripsPage()
-    }
-}
+*/
