@@ -1,7 +1,9 @@
 package br.senai.sp.jandira.mytrips
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
+import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,6 +24,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -28,6 +34,9 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -35,9 +44,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberTopAppBarState
@@ -45,6 +57,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -52,6 +65,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -70,17 +84,18 @@ class MainActivity : ComponentActivity() {
                         .verticalScroll(ScrollState(1), enabled = true),
                     color = Color.White
                 ) {
-                    SignUp()
+                    MyTripsPage()
                 }
             }
         }
     }
 }
 
-val purple = 0xffCF06F0
-val gray = 0xffA09C9C
+val purple = 0xffCF06F0;
+val gray = 0xffA09C9C;
 val lightGray = 0xF6F6F6ff;
-
+val lightPurple = 0xFFEAABF4;
+val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White));
 
 @Composable
 fun Login() {
@@ -198,7 +213,9 @@ fun Login() {
     }
 }
 
-val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
+
+
+@SuppressLint("InvalidColorHexValue")
 @Composable fun SignUp(){
 
     Column (
@@ -358,6 +375,8 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
                 shape = RoundedCornerShape(14.dp),
                 onValueChange = {}
             )
+
+
             OutlinedTextField(
                 value = "**********",
                 enabled = true,
@@ -400,7 +419,7 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
                 shape = RectangleShape,
                 border = BorderStroke(1.dp, Color((purple))),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(0x0000000)
+                    containerColor = Color(0x00000000)
                 )
             ){
                 Checkbox(checked = false, onCheckedChange = {/**/},
@@ -461,36 +480,235 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
 
 }
 
-@Composable fun MyTrips(){
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable fun MyTripsPage(){
 
     Column (
         modifier = Modifier.fillMaxSize()
     ) {
+        Card (
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(180.dp),
+            shape = RectangleShape
+        ) {
+            Box(modifier = Modifier.fillMaxSize()){
+                Image(painter = painterResource(id = R.drawable.paris),
+                    contentDescription = "",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier.fillMaxSize()
+                )
+                Column (
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp, 14.dp)
+                ) {
 
-        Card () {
-            Column {
-                Column ( ){
-                    Card () {
-                        Box(
+                    Column (
+                        modifier = Modifier.
+                        fillMaxWidth(),
+                        horizontalAlignment = Alignment.End
+                    ){
 
-                        ){}
-
+                        Card (
+                            modifier = Modifier.size(60.dp),
+                            shape = RoundedCornerShape(50.dp)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.susanna),
+                                modifier = Modifier.fillMaxSize(),
+                                contentDescription = "")
+                        }
+                        Text(
+                            text = "Susanna Hoffs",
+                            color = Color.White,
+                            fontSize = 14.sp
+                            )
                     }
-                    Text(text = "Susanna Hoffs")
+                    Column (
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.Bottom
+                        ) {
+                        Row (modifier = Modifier.height(16.dp)){
+                            Icon(
+                                Icons.Filled.LocationOn,
+                                contentDescription = "Ícone de localização",
+                                tint = Color.White,
+                                modifier = Modifier.size(18.dp))
+                            Text(
+                                text = "You're in Paris",
+                                color = Color.White,
+                                fontFamily = Poppins,
+                                letterSpacing = (-0.5).sp,
+                                fontSize = 15.sp
+                            )
+                        }
+                        Text(
+                            text = "My Trips",
+                            color = Color.White,
+                            fontFamily = Poppins,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp,
+                            letterSpacing = -1.sp,
+                            modifier = Modifier.height(32.dp),
+                        )
+                    }
                 }
-                Column {
-                    Row {
-                        Icon(Icons.Filled.LocationOn, contentDescription = "Ícone de localização")
-                        Text(text = "You're in Paris")
+            }
+        } // fim do card
+
+        Column (modifier = Modifier
+            .background(Color(lightGray))
+            .fillMaxSize()){
+            Text(text = "Categories", modifier = Modifier.padding(12.dp))
+            Row(
+                modifier = Modifier.padding(start = 12.dp)
+            ){
+                Card (
+                    modifier = Modifier
+                        .height(70.dp),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 10.dp
+                    ),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(purple),
+                        disabledContainerColor =  Color(lightPurple)
+                    )
+                ){
+                    Column (
+                        modifier = Modifier.padding( 16.dp, 12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(Icons.TwoTone.Star, contentDescription = "", tint = Color.White)
+                        Text(text = "Mountain", color = Color.White)
+                    }
+                }
+            }
+
+            SearchBar(query = "", onQueryChange = {}, onSearch = {} , active = false, onActiveChange = {},
+                        colors = SearchBarDefaults.colors(
+                            containerColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(15.dp),
+                        trailingIcon = {
+                            Icon(Icons.Outlined.Search, contentDescription = "", tint = Color.Gray)
+                        },
+                placeholder = {
+                    Text(text = "Search your destiny", color = Color.Gray)
+                },
+                        modifier = Modifier.padding(12.dp)
+
+            ) {}
+            Text(text = "Past Trips", modifier = Modifier.padding(12.dp))
+            Column (modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)){
+                Card (
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .height(220.dp)
+                        .fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 10.dp
+                    )
+                ) {
+                    Column (modifier = Modifier
+                        .fillMaxSize()
+                        .padding(6.dp)) {
+                        Box(modifier = Modifier
+                            .height(120.dp)
+                            .fillMaxWidth()){
+                            Image(  painter = painterResource(id = R.drawable.london),
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize(),
+                                    contentDescription = "")
+                        }
+                        Column(
+                            modifier = Modifier.padding(end = 10.dp)
+                        ){
+                            Text(   text = "London, 2019",
+                                fontFamily = Poppins,
+                                fontSize = 14.sp,
+                                color = Color(purple),
+                                modifier = Modifier.padding(vertical = 4.dp)
+                            )
+                            Text(   text = "London is the capital and largest city of  the United Kingdom, with a population of just under 9 million.",
+                                fontSize = 10.5.sp,
+                                lineHeight = 12.sp,
+                                fontFamily = Poppins,
+                                color = Color.Gray,
+                                modifier = Modifier.padding(vertical = 4.dp).fillMaxWidth()
+                            )
+                            Text(   text = "18 Feb - 21 Feb",
+                                fontSize = 10.sp,
+                                fontFamily = Poppins,
+                                textAlign = TextAlign.End,
+                                color = Color(purple),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+
                     }
                 }
             }
         }
+    }
+}
 
-        Column {
+@Composable
+fun PastTripCard(){
+    Card (
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        modifier = Modifier
+            .height(220.dp)
+            .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )
+    ) {
+        Column (modifier = Modifier
+            .fillMaxSize()
+            .padding(6.dp)) {
+            Box(modifier = Modifier
+                .height(120.dp)
+                .fillMaxWidth()){
+                Image(  painter = painterResource(id = R.drawable.london),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                    contentDescription = "")
+            }
+            Column(
+                modifier = Modifier.padding(end = 10.dp)
+            ){
+                Text(   text = "London, 2019",
+                    fontFamily = Poppins,
+                    fontSize = 14.sp,
+                    color = Color(purple),
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+                Text(   text = "London is the capital and largest city of  the United Kingdom, with a population of just under 9 million.",
+                    fontSize = 10.5.sp,
+                    lineHeight = 12.sp,
+                    fontFamily = Poppins,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(vertical = 4.dp).fillMaxWidth()
+                )
+                Text(   text = "18 Feb - 21 Feb",
+                    fontSize = 10.sp,
+                    fontFamily = Poppins,
+                    textAlign = TextAlign.End,
+                    color = Color(purple),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
 
         }
-
     }
 }
 
@@ -517,6 +735,6 @@ fun SignUpPreview() {
 @Composable
 fun MyTripsPreview() {
     MyTripsTheme {
-        MyTrips()
+        MyTripsPage()
     }
 }
