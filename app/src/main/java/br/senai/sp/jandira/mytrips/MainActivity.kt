@@ -48,6 +48,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -210,7 +211,7 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
             colors = CardDefaults.cardColors(
                 containerColor = Color(purple)
             ),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape( 20.dp)
         ){}
         Column (modifier = Modifier
             .fillMaxWidth()
@@ -248,8 +249,11 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
                     painter = painterResource(id = R.drawable.usuario),
                     contentDescription = "Ícone de usuário",
                     modifier = Modifier
-                        .size(65.dp)
-                        .offset(17.dp, 14.dp)
+                        .padding(16.dp)
+                        ,
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.Inside
+
                 )
             }
 
@@ -258,7 +262,7 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
                 contentDescription = "Ícone de adicionar foto",
                 modifier = Modifier
                     .size(30.dp)
-                    .offset(-15.dp, 72.dp)
+                    .offset((-15).dp, 72.dp)
             )
 
         }
@@ -270,6 +274,8 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
         ){
             OutlinedTextField(
                 value = "Susanna Hoffs",
+                enabled = true,
+                readOnly = false,
                 label = {
                     Text(text = "Username",
                         modifier = Modifier
@@ -465,6 +471,9 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
             Column {
                 Column ( ){
                     Card () {
+                        Box(
+
+                        ){}
 
                     }
                     Text(text = "Susanna Hoffs")
@@ -476,6 +485,10 @@ val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White))
                     }
                 }
             }
+        }
+
+        Column {
+
         }
 
     }
@@ -499,7 +512,7 @@ fun SignUpPreview() {
     }
 }
 
-/*
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MyTripsPreview() {
@@ -507,4 +520,3 @@ fun MyTripsPreview() {
         MyTrips()
     }
 }
-*/
