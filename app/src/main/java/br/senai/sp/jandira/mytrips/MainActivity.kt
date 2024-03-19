@@ -27,15 +27,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.BeachAccess
+import androidx.compose.material.icons.filled.DownhillSkiing
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material.icons.outlined.Landscape
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.Button
@@ -62,6 +67,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -81,8 +87,8 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(ScrollState(1), enabled = true),
+                        .fillMaxSize(),
+//                        .verticalScroll(ScrollState(1), enabled = true),
                     color = Color.White
                 ) {
                     MyTripsPage()
@@ -489,7 +495,6 @@ data class Trip(
     val periodo: String,
     val image : Int
 )
-
 val tripList = listOf(
     Trip(
         1,
@@ -509,6 +514,29 @@ val tripList = listOf(
     )
 )
 
+data class Categorie(
+    val id: Int,
+    val nome: String,
+    val image : ImageVector
+)
+val categorieList = listOf(
+    Categorie(
+        1,
+        "Mountain",
+        Icons.Outlined.Landscape
+    ),
+    Categorie(
+        1,
+        "Snow",
+        Icons.Default.DownhillSkiing
+    ),
+    Categorie(
+        1,
+        "Beach",
+        Icons.Default.BeachAccess
+)
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun MyTripsPage(){
 
@@ -518,7 +546,7 @@ val tripList = listOf(
         Card (
             modifier = Modifier
                 .fillMaxWidth()
-                .height(180.dp),
+                .height(184.dp),
             shape = RectangleShape
         ) {
             Box(modifier = Modifier.fillMaxSize()){
@@ -530,7 +558,7 @@ val tripList = listOf(
                 Column (
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp, 14.dp)
+                        .padding(start = 16.dp, end= 16.dp, top = 12.dp, bottom = 8.dp)
                 ) {
 
                     Column (
@@ -563,13 +591,15 @@ val tripList = listOf(
                                 Icons.Filled.LocationOn,
                                 contentDescription = "Ícone de localização",
                                 tint = Color.White,
-                                modifier = Modifier.size(18.dp))
+                                modifier = Modifier.size(18.dp).offset(y = 5.dp)
+                            )
                             Text(
                                 text = "You're in Paris",
                                 color = Color.White,
                                 fontFamily = Poppins,
                                 letterSpacing = (-0.5).sp,
-                                fontSize = 15.sp
+                                fontSize = 15.sp,
+                                modifier = Modifier.offset(y = 4.dp)
                             )
                         }
                         Text(
@@ -577,7 +607,7 @@ val tripList = listOf(
                             color = Color.White,
                             fontFamily = Poppins,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp,
+                            fontSize = 25.sp,
                             letterSpacing = -1.sp,
                             modifier = Modifier.height(32.dp),
                         )
@@ -589,30 +619,20 @@ val tripList = listOf(
         Column (modifier = Modifier
             .background(Color(lightGray))
             .fillMaxSize()){
-            Text(text = "Categories", modifier = Modifier.padding(12.dp))
-            Row(
-                modifier = Modifier.padding(start = 12.dp)
-            ){
-                Card (
-                    modifier = Modifier
-                        .height(70.dp),
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 10.dp
-                    ),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(purple),
-                        disabledContainerColor =  Color(lightPurple)
-                    )
-                ){
-                    Column (
-                        modifier = Modifier.padding( 16.dp, 12.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(Icons.TwoTone.Star, contentDescription = "", tint = Color.White)
-                        Text(text = "Mountain", color = Color.White)
-                    }
+            Text(
+                text = "Categories",
+                modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 2.dp),
+                fontFamily = Poppins,
+                color = Color.DarkGray
+            )
+            LazyRow(
+                modifier = Modifier.padding(start = 12.dp),
+                content = {
+                items(categorieList){ categorie ->
+                    CategorieCard(nome = categorie.nome, imagem = categorie.image)
                 }
-            }
+
+            })
 
             SearchBar(query = "", onQueryChange = {}, onSearch = {} , active = false, onActiveChange = {},
                         colors = SearchBarDefaults.colors(
@@ -623,16 +643,28 @@ val tripList = listOf(
                             Icon(Icons.Outlined.Search, contentDescription = "", tint = Color.Gray)
                         },
                 placeholder = {
-                    Text(text = "Search your destiny", color = Color.Gray)
+                    Text(
+                        text = "Search your destiny",
+                        color = Color.Gray,
+                        fontFamily = Poppins,
+                        fontSize = 14.sp
+                        )
                 },
-                        modifier = Modifier.padding(12.dp)
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .height(50.dp)
 
             ) {}
-            Text(text = "Past Trips", modifier = Modifier.padding(12.dp))
+            Text(
+                text = "Past Trips",
+                modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 2.dp),
+                fontFamily = Poppins,
+                color = Color.DarkGray,
+                fontSize = 15.sp
+            )
             LazyColumn(modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp),
-                contentPadding = PaddingValues(12.dp)
+                .fillMaxWidth(),
+                contentPadding = PaddingValues(12.dp, 6.dp)
             ){
 
                 items(tripList) { trip ->
@@ -648,6 +680,8 @@ val tripList = listOf(
     }
 }
 
+
+//cards das lazy columns e rows
 @Composable
 fun PastTripCard(local: String, ano: String, descricao: String, periodo: String, imagem:Int){
     Card (
@@ -655,7 +689,7 @@ fun PastTripCard(local: String, ano: String, descricao: String, periodo: String,
             containerColor = Color.White
         ),
         modifier = Modifier
-            .height(220.dp)
+            .height(226.dp)
             .fillMaxWidth()
             .padding(bottom = 10.dp),
         elevation = CardDefaults.cardElevation(
@@ -680,11 +714,11 @@ fun PastTripCard(local: String, ano: String, descricao: String, periodo: String,
                     fontFamily = Poppins,
                     fontSize = 14.sp,
                     color = Color(purple),
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(top = 4.dp)
                 )
                 Text(   text = descricao,
                     fontSize = 10.5.sp,
-                    lineHeight = 12.sp,
+                    lineHeight = 14.sp,
                     fontFamily = Poppins,
                     color = Color.Gray,
                     modifier = Modifier
@@ -703,6 +737,34 @@ fun PastTripCard(local: String, ano: String, descricao: String, periodo: String,
         }
     }
 }
+
+@Composable
+fun CategorieCard(nome: String, imagem: ImageVector){
+    Card (
+        modifier = Modifier
+            .height(70.dp)
+            .width(130.dp)
+            .padding(end = 10.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(purple),
+            disabledContainerColor =  Color(lightPurple)
+        ),
+    ){
+        Column (
+            modifier = Modifier
+                .padding(16.dp, 12.dp)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Icon(imagem, contentDescription = "$nome Icon", tint = Color.White)
+            Text(text = nome, color = Color.White, fontFamily = Poppins, fontSize = 15.sp)
+        }
+    }
+}
+
 
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -730,6 +792,12 @@ fun MyTripsPreview() {
         MyTripsPage()
     }
 }
+
+
+
+
+
+
 
 
 
