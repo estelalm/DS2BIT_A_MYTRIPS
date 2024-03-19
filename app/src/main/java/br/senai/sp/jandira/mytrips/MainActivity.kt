@@ -32,6 +32,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.BeachAccess
 import androidx.compose.material.icons.filled.DownhillSkiing
@@ -51,6 +52,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -537,8 +539,10 @@ val categorieList = listOf(
 )
 )
 
+var count = 0
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun MyTripsPage(){
+
 
     Column (
         modifier = Modifier.fillMaxSize()
@@ -558,7 +562,7 @@ val categorieList = listOf(
                 Column (
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(start = 16.dp, end= 16.dp, top = 12.dp, bottom = 8.dp)
+                        .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 8.dp)
                 ) {
 
                     Column (
@@ -591,7 +595,9 @@ val categorieList = listOf(
                                 Icons.Filled.LocationOn,
                                 contentDescription = "Ícone de localização",
                                 tint = Color.White,
-                                modifier = Modifier.size(18.dp).offset(y = 5.dp)
+                                modifier = Modifier
+                                    .size(18.dp)
+                                    .offset(y = 5.dp)
                             )
                             Text(
                                 text = "You're in Paris",
@@ -629,7 +635,12 @@ val categorieList = listOf(
                 modifier = Modifier.padding(start = 12.dp),
                 content = {
                 items(categorieList){ categorie ->
-                    CategorieCard(nome = categorie.nome, imagem = categorie.image)
+                    count++
+                    var color = purple
+                    if(count > 1){
+                        color = lightPurple
+                    }
+                    CategorieCard(nome = categorie.nome, imagem = categorie.image, color)
                 }
 
             })
@@ -655,30 +666,40 @@ val categorieList = listOf(
                             .height(50.dp)
 
             ) {}
-            Text(
-                text = "Past Trips",
-                modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 2.dp),
-                fontFamily = Poppins,
-                color = Color.DarkGray,
-                fontSize = 15.sp
-            )
+
             LazyColumn(modifier = Modifier
                 .fillMaxWidth(),
                 contentPadding = PaddingValues(12.dp, 6.dp)
             ){
-
+                item {
+                    Text(
+                        text = "Past Trips",
+                        modifier = Modifier.padding(top = 12.dp, bottom = 2.dp),
+                        fontFamily = Poppins,
+                        color = Color.DarkGray,
+                        fontSize = 15.sp
+                    )
+                }
                 items(tripList) { trip ->
                     PastTripCard(local = trip.nome, ano = trip.ano, descricao = trip.descricao, periodo = trip.periodo, imagem = trip.image)
                 }
             }
-      //      Column (modifier = Modifier
-     //           .fillMaxWidth()
-       //         .padding(8.dp)){
-     //       }
 
         }
     }
+
+    FloatingActionButton(
+        onClick = { /*TODO*/ },
+        containerColor = Color(purple),
+        contentColor = Color.White,
+        shape = RoundedCornerShape(100.dp),
+        modifier = Modifier
+            .border(1.dp, Color.White, RoundedCornerShape(100.dp))
+    ) {
+        Icon(Icons.Default.Add, "Add")
+    }
 }
+
 
 
 //cards das lazy columns e rows
@@ -739,7 +760,7 @@ fun PastTripCard(local: String, ano: String, descricao: String, periodo: String,
 }
 
 @Composable
-fun CategorieCard(nome: String, imagem: ImageVector){
+fun CategorieCard(nome: String, imagem: ImageVector, color: Long){
     Card (
         modifier = Modifier
             .height(70.dp)
@@ -749,7 +770,7 @@ fun CategorieCard(nome: String, imagem: ImageVector){
             defaultElevation = 10.dp
         ),
         colors = CardDefaults.cardColors(
-            containerColor = Color(purple),
+            containerColor = Color(color),
             disabledContainerColor =  Color(lightPurple)
         ),
     ){
