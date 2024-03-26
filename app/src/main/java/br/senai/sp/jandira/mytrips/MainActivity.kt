@@ -3,6 +3,7 @@ package br.senai.sp.jandira.mytrips
 import android.annotation.SuppressLint
 import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,6 +12,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +32,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -62,6 +65,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -74,6 +80,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -107,8 +117,16 @@ val lightGray = 0xF6F6F6ff;
 val lightPurple = 0xFFEAABF4;
 val gradiente = Brush.horizontalGradient(listOf(Color(purple), Color.White));
 
+
 @Composable
 fun Login() {
+    var emailState = remember {
+        mutableStateOf("")
+    }
+    var senhaState = remember {
+        mutableStateOf("")
+    }
+
     Column (modifier =  Modifier.fillMaxWidth()){
         Card (modifier = Modifier
             .width(150.dp)
@@ -139,7 +157,7 @@ fun Login() {
             .fillMaxWidth()
             .padding(20.dp)){
             OutlinedTextField(
-                value = "teste@email.com",
+                value = emailState.value,
                 label = {
                         Text(text = "E-mail",
                             modifier = Modifier
@@ -157,10 +175,15 @@ fun Login() {
                 ),
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(14.dp),
-                onValueChange = {}
+                onValueChange = {
+                    emailState.value = it
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email
+                )
             )
             OutlinedTextField(
-                value = "**********",
+                value = senhaState.value,
                 label = {
                     Text(text = "Password",
                         modifier = Modifier
@@ -180,7 +203,13 @@ fun Login() {
                 modifier = Modifier
                     .padding(vertical = 24.dp)
                     .fillMaxWidth(),
-                onValueChange = {}
+                onValueChange = {
+                    senhaState.value = it
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password
+                ),
+                visualTransformation = PasswordVisualTransformation()
             )
 
             Button(onClick = { /*TODO*/ },
@@ -228,8 +257,26 @@ fun Login() {
 @SuppressLint("InvalidColorHexValue")
 @Composable fun SignUp(){
 
+    var nameState = remember {
+        mutableStateOf("")
+    }
+    var phoneState = remember {
+        mutableStateOf("")
+    }
+    var emailState = remember {
+        mutableStateOf("")
+    }
+    var passwordState = remember {
+        mutableStateOf("")
+    }
+    var over18State = remember{
+        mutableStateOf(false)
+    }
+
     Column (
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(ScrollState(1), enabled = true)
     ) {
         Card (modifier = Modifier
             .width(150.dp)
@@ -300,7 +347,7 @@ fun Login() {
                 .padding(horizontal = 20.dp, vertical = 10.dp)
         ){
             OutlinedTextField(
-                value = "Susanna Hoffs",
+                value = nameState.value,
                 enabled = true,
                 readOnly = false,
                 label = {
@@ -323,14 +370,19 @@ fun Login() {
                     focusedBorderColor = Color(purple),
                     focusedLabelColor = Color.Black
                 ),
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp),
                 shape = RoundedCornerShape(14.dp),
-                onValueChange = {}
+                onValueChange = {
+                    nameState.value = it
+                }
             )
             OutlinedTextField(
-                value = "99999-0987",
+                value = phoneState.value,
                 label = {
                     Text(text = "Phone",
                         modifier = Modifier
@@ -355,10 +407,15 @@ fun Login() {
                     .fillMaxWidth()
                     .padding(top = 24.dp),
                 shape = RoundedCornerShape(14.dp),
-                onValueChange = {}
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone
+                ),
+                onValueChange = {
+                    phoneState.value = it
+                }
             )
             OutlinedTextField(
-                value = "susanna@email.com",
+                value = emailState.value,
                 label = {
                     Text(text = "E-mail",
                         modifier = Modifier
@@ -383,12 +440,17 @@ fun Login() {
                     .fillMaxWidth()
                     .padding(top = 24.dp),
                 shape = RoundedCornerShape(14.dp),
-                onValueChange = {}
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email
+                ),
+                onValueChange = {
+                    emailState.value = it
+                }
             )
 
 
             OutlinedTextField(
-                value = "**********",
+                value = passwordState.value,
                 enabled = true,
                 label = {
                     Text(text = "Password",
@@ -414,7 +476,10 @@ fun Login() {
                 modifier = Modifier
                     .padding(top = 24.dp)
                     .fillMaxWidth(),
-                onValueChange = {}
+                visualTransformation = PasswordVisualTransformation(),
+                onValueChange = {
+                    passwordState.value = it
+                }
             )
         }
 
@@ -432,7 +497,10 @@ fun Login() {
                     containerColor = Color(0x00000000)
                 )
             ){
-                Checkbox(checked = false, onCheckedChange = {/**/},
+                Checkbox(checked = over18State.value,
+                    onCheckedChange = {
+                        over18State.value = it
+                    },
                     modifier = Modifier.size(30.dp),
                     colors = CheckboxDefaults.colors(
                         uncheckedColor = Color.White,
@@ -471,7 +539,7 @@ fun Login() {
             .fillMaxWidth()
             .padding(end = 20.dp, top = 12.dp), horizontalArrangement = Arrangement.End) {
             Text(text = "Already have an account? ", fontSize = 12.sp, color = Color(gray), fontFamily = Poppins)
-            Text(text = "Sign up", fontSize = 12.sp, color = Color(purple), fontFamily = Poppins, fontWeight = FontWeight.Bold)
+            Text(text = "Sign in", fontSize = 12.sp, color = Color(purple), fontFamily = Poppins, fontWeight = FontWeight.Bold)
         }
         Spacer(modifier = Modifier.height(100.dp))
         Card (
@@ -544,6 +612,10 @@ var count = 0
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun MyTripsPage(){
 
+
+    var searchState = remember {
+        mutableStateOf("")
+    }
     Column (
         modifier = Modifier.fillMaxSize()
     ) {
@@ -615,7 +687,9 @@ var count = 0
                             fontWeight = FontWeight.Bold,
                             fontSize = 25.sp,
                             letterSpacing = -1.sp,
-                            modifier = Modifier.height(32.dp).padding(start = 2.dp),
+                            modifier = Modifier
+                                .height(32.dp)
+                                .padding(start = 2.dp),
                         )
                     }
                 }
@@ -647,7 +721,10 @@ var count = 0
 
             })
 
-            SearchBar(query = "", onQueryChange = {}, onSearch = {} , active = false, onActiveChange = {},
+            SearchBar(query = searchState.value,
+                onQueryChange = {
+                        searchState.value = it
+                }, onSearch = {} , active = false, onActiveChange = {},
                         colors = SearchBarDefaults.colors(
                             containerColor = Color.White
                         ),
