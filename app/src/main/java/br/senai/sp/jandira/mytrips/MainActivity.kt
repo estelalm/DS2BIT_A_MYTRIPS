@@ -71,6 +71,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -519,30 +520,29 @@ val tripList = listOf(
 data class Categorie(
     val id: Int,
     val nome: String,
-    val image : ImageVector
+    val image : Int
 )
 val categorieList = listOf(
     Categorie(
         1,
         "Mountain",
-        Icons.Outlined.Landscape
+        R.drawable.mountain
     ),
     Categorie(
         1,
         "Snow",
-        Icons.Default.DownhillSkiing
+        R.drawable.snow
     ),
     Categorie(
         1,
         "Beach",
-        Icons.Default.BeachAccess
+        R.drawable.beach
 )
 )
 
 var count = 0
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun MyTripsPage(){
-
 
     Column (
         modifier = Modifier.fillMaxSize()
@@ -562,7 +562,7 @@ var count = 0
                 Column (
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 8.dp)
+                        .padding(start = 18.dp, end = 16.dp, top = 12.dp, bottom = 8.dp)
                 ) {
 
                     Column (
@@ -615,7 +615,7 @@ var count = 0
                             fontWeight = FontWeight.Bold,
                             fontSize = 25.sp,
                             letterSpacing = -1.sp,
-                            modifier = Modifier.height(32.dp),
+                            modifier = Modifier.height(32.dp).padding(start = 2.dp),
                         )
                     }
                 }
@@ -624,7 +624,9 @@ var count = 0
 
         Column (modifier = Modifier
             .background(Color(lightGray))
-            .fillMaxSize()){
+            .fillMaxSize()
+            .padding(horizontal = 8.dp))
+        {
             Text(
                 text = "Categories",
                 modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 2.dp),
@@ -688,16 +690,24 @@ var count = 0
         }
     }
 
-    FloatingActionButton(
-        onClick = { /*TODO*/ },
-        containerColor = Color(purple),
-        contentColor = Color.White,
-        shape = RoundedCornerShape(100.dp),
+    Row (
         modifier = Modifier
-            .border(1.dp, Color.White, RoundedCornerShape(100.dp))
+            .offset(320.dp, 700.dp)
     ) {
-        Icon(Icons.Default.Add, "Add")
+        FloatingActionButton(
+            onClick = { /*TODO*/ },
+            containerColor = Color(purple),
+            contentColor = Color.White,
+            shape = RoundedCornerShape(100.dp),
+            modifier = Modifier
+                .border(1.dp, Color.White, RoundedCornerShape(100.dp))
+
+        ) {
+            Icon(Icons.Default.Add, "Add")
+        }
     }
+
+
 }
 
 
@@ -719,10 +729,14 @@ fun PastTripCard(local: String, ano: String, descricao: String, periodo: String,
     ) {
         Column (modifier = Modifier
             .fillMaxSize()
-            .padding(6.dp)) {
-            Box(modifier = Modifier
+            .padding(6.dp)
+        ) {
+            Card(modifier = Modifier
                 .height(120.dp)
-                .fillMaxWidth()){
+                .fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp)
+            )
+            {
                 Image(  painter = painterResource(id = imagem),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize(),
@@ -760,10 +774,10 @@ fun PastTripCard(local: String, ano: String, descricao: String, periodo: String,
 }
 
 @Composable
-fun CategorieCard(nome: String, imagem: ImageVector, color: Long){
+fun CategorieCard(nome: String, imagem: Int, color: Long){
     Card (
         modifier = Modifier
-            .height(70.dp)
+            .height(66.dp)
             .width(130.dp)
             .padding(end = 10.dp),
         elevation = CardDefaults.cardElevation(
@@ -773,6 +787,7 @@ fun CategorieCard(nome: String, imagem: ImageVector, color: Long){
             containerColor = Color(color),
             disabledContainerColor =  Color(lightPurple)
         ),
+        shape = RoundedCornerShape(10.dp)
     ){
         Column (
             modifier = Modifier
@@ -780,7 +795,7 @@ fun CategorieCard(nome: String, imagem: ImageVector, color: Long){
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Icon(imagem, contentDescription = "$nome Icon", tint = Color.White)
+            Image(painter = painterResource(id = imagem), contentDescription = "$nome Icon" )
             Text(text = nome, color = Color.White, fontFamily = Poppins, fontSize = 15.sp)
         }
     }
