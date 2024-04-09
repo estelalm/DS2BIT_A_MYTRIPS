@@ -113,6 +113,8 @@ MyTripsTheme {
                         unfocusedLeadingIconColor = Color(purple),
                         unfocusedContainerColor = Color.White,
                         unfocusedBorderColor = Color(purple),
+                        focusedLeadingIconColor = Color(purple),
+                        focusedBorderColor = Color(purple)
                     ),
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(14.dp),

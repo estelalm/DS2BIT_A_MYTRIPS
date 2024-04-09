@@ -271,7 +271,7 @@ fun HomeScreen(navController: NavHostController) {
 
     Row (
         modifier = Modifier
-            .offset(320.dp, 700.dp)
+            .offset(320.dp, 640.dp)
     ) {
         FloatingActionButton(
             onClick = { /*TODO*/ },
@@ -279,6 +279,7 @@ fun HomeScreen(navController: NavHostController) {
             contentColor = Color.White,
             shape = RoundedCornerShape(100.dp),
             modifier = Modifier
+                .border(1.dp, Color.White, RoundedCornerShape(100.dp))
                 .border(1.dp, Color.White, RoundedCornerShape(100.dp))
 
         ) {
