@@ -51,6 +51,7 @@ import br.senai.sp.jandira.mytrips.lightGray
 import br.senai.sp.jandira.mytrips.lightPurple
 import br.senai.sp.jandira.mytrips.purple
 import br.senai.sp.jandira.mytrips.ui.theme.Poppins
+import androidx.compose.material3.Card
 
 
 data class Trip(
