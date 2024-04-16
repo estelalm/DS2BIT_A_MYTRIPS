@@ -3,6 +3,7 @@ package br.senai.sp.jandira.mytrips.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,64 +53,16 @@ import br.senai.sp.jandira.mytrips.lightPurple
 import br.senai.sp.jandira.mytrips.purple
 import br.senai.sp.jandira.mytrips.ui.theme.Poppins
 import androidx.compose.material3.Card
-
-
-data class Trip(
-    val id: Int,
-    val nome: String,
-    val descricao: String,
-    val ano: String,
-    val periodo: String,
-    val image : Int
-)
-val tripList = listOf(
-    Trip(
-        1,
-        "London",
-        "London is the capital and largest city of  the United Kingdom, with a population of just under 9 million.",
-        "2019",
-        "18 Feb - 21 Feb",
-        R.drawable.london
-    ),
-    Trip(
-        2,
-        "Porto",
-        "Porto is the second largest city in Portugal, the capital of the Porto District and one of the Iberian Peninsula's major urban areas.",
-        "2022",
-        "16 Jun - 26 Jun",
-        R.drawable.porto
-    )
-)
-
-data class Categorie(
-    val id: Int,
-    val nome: String,
-    val image : Int
-)
-val categorieList = listOf(
-    Categorie(
-        1,
-        "Mountain",
-        R.drawable.mountain
-    ),
-    Categorie(
-        2,
-        "Snow",
-        R.drawable.snow
-    ),
-    Categorie(
-        3,
-        "Beach",
-        R.drawable.beach
-    )
-)
-
-
+import br.senai.sp.jandira.mytrips.repository.CategorieRepository
+import br.senai.sp.jandira.mytrips.repository.TripRepository
+import br.senai.sp.jandira.mytrips.utility.simplificarData
+import java.time.LocalDate
 
 
 
 
 var count = 0
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavHostController) {
@@ -117,6 +70,9 @@ fun HomeScreen(navController: NavHostController) {
 
     var searchState = remember {
         mutableStateOf("")
+    }
+    var categorieColorState = remember{
+        mutableStateOf("Mountain")
     }
     Column (
         modifier = Modifier.fillMaxSize()
@@ -212,13 +168,38 @@ fun HomeScreen(navController: NavHostController) {
             LazyRow(
                 modifier = Modifier.padding(start = 12.dp),
                 content = {
-                    items(categorieList){ categorie ->
-                        count++
+                    items(CategorieRepository().listAllCategories()){
                         var color = purple
-                        if(count > 1){
+
+                        if(categorieColorState.value != it.local){
                             color = lightPurple
                         }
-                        CategorieCard(nome = categorie.nome, imagem = categorie.image, color)
+
+                        Card (
+                            modifier = Modifier
+                                .height(66.dp)
+                                .width(130.dp)
+                                .padding(end = 10.dp)
+                                .clickable { categorieColorState.value = it.local },
+                            elevation = CardDefaults.cardElevation(
+                                defaultElevation = 10.dp
+                            ),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color(color),
+                                disabledContainerColor =  Color(lightPurple)
+                            ),
+                            shape = RoundedCornerShape(10.dp)
+                        ){
+                            Column (
+                                modifier = Modifier
+                                    .padding(16.dp, 12.dp)
+                                    .fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ) {
+                                Image(painter = painterResource(id = it.image!!), contentDescription = "${it.local} Icon" )
+                                Text(text = it.local, color = Color.White, fontFamily = Poppins, fontSize = 15.sp)
+                            }
+                        }
                     }
 
                 })
@@ -261,8 +242,16 @@ fun HomeScreen(navController: NavHostController) {
                         fontSize = 15.sp
                     )
                 }
-                items(tripList) { trip ->
-                    PastTripCard(local = trip.nome, ano = trip.ano, descricao = trip.descricao, periodo = trip.periodo, imagem = trip.image)
+                items(TripRepository().listAllTrips()) { trip ->
+                    if(searchState.value == "" || trip.destino.contains(searchState.value)){
+                        PastTripCard(
+                            local = trip.destino,
+                            data_chegada = trip.data_chegada,
+                            data_partida = trip.data_partida,
+                            descricao = trip.descricao,
+                            imagem = trip.imagem!!)
+                    }
+
                 }
             }
 
@@ -293,13 +282,13 @@ fun HomeScreen(navController: NavHostController) {
 
 //cards das lazy columns e rows
 @Composable
-fun PastTripCard(local: String, ano: String, descricao: String, periodo: String, imagem:Int){
+fun PastTripCard(local: String, data_chegada: LocalDate, data_partida: LocalDate, descricao: String,  imagem: Int){
     Card (
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
         modifier = Modifier
-            .height(226.dp)
+
             .fillMaxWidth()
             .padding(bottom = 10.dp),
         elevation = CardDefaults.cardElevation(
@@ -311,7 +300,7 @@ fun PastTripCard(local: String, ano: String, descricao: String, periodo: String,
             .padding(6.dp)
         ) {
             Card(modifier = Modifier
-                .height(120.dp)
+                .height(116.dp)
                 .fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
             )
@@ -324,7 +313,7 @@ fun PastTripCard(local: String, ano: String, descricao: String, periodo: String,
             Column(
                 modifier = Modifier.padding(end = 10.dp)
             ){
-                Text(   text = "$local, $ano",
+                Text(   text = "$local, ${data_chegada.year}",
                     fontFamily = Poppins,
                     fontSize = 14.sp,
                     color = Color(purple),
@@ -339,7 +328,7 @@ fun PastTripCard(local: String, ano: String, descricao: String, periodo: String,
                         .padding(vertical = 4.dp)
                         .fillMaxWidth()
                 )
-                Text(   text = periodo,
+                Text(  text = "${simplificarData(data_chegada)} - ${simplificarData(data_partida)}",
                     fontSize = 10.sp,
                     fontFamily = Poppins,
                     textAlign = TextAlign.End,
@@ -352,12 +341,13 @@ fun PastTripCard(local: String, ano: String, descricao: String, periodo: String,
     }
 }
 @Composable
-fun CategorieCard(nome: String, imagem: Int, color: Long){
+fun CategorieCard(local: String, imagem: Int, color: Long, state : String){
     Card (
         modifier = Modifier
             .height(66.dp)
             .width(130.dp)
-            .padding(end = 10.dp),
+            .padding(end = 10.dp)
+            .clickable { local },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp
         ),
@@ -373,8 +363,8 @@ fun CategorieCard(nome: String, imagem: Int, color: Long){
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Image(painter = painterResource(id = imagem), contentDescription = "$nome Icon" )
-            Text(text = nome, color = Color.White, fontFamily = Poppins, fontSize = 15.sp)
+            Image(painter = painterResource(id = imagem), contentDescription = "$local Icon" )
+            Text(text = local, color = Color.White, fontFamily = Poppins, fontSize = 15.sp)
         }
     }
 }

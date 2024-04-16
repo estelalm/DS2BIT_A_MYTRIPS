@@ -138,9 +138,6 @@ MyTripsTheme {
                     leadingIcon = {
                         Icon(Icons.Filled.Lock, contentDescription = "Password", modifier = Modifier.size(35.dp))
                     },
-                    trailingIcon = {
-
-                    },
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedLeadingIconColor = Color(purple),
                         unfocusedContainerColor = Color.White,
