@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import br.senai.sp.jandira.mytrips.gray
 import br.senai.sp.jandira.mytrips.purple
+import br.senai.sp.jandira.mytrips.repository.UserRepository
 import br.senai.sp.jandira.mytrips.ui.theme.MyTripsTheme
 import br.senai.sp.jandira.mytrips.ui.theme.Poppins
 
@@ -161,11 +162,15 @@ MyTripsTheme {
 
                 Button(onClick =
                 {
-                    if(emailState.value == "user@email.com" && senhaState.value == "senha")  {
-                        navController.navigate("home")
-                    }else{
-                        isErrorState.value = true
-                        mensagemErroState.value = "Email ou senha inválidos"
+
+                    var userList = UserRepository().listAllUsers()
+                    userList.forEach {
+                        if(emailState.value == it.email && senhaState.value == it.password)  {
+                            navController.navigate("home")
+                        }else{
+                            isErrorState.value = true
+                            mensagemErroState.value = "Incorrect email or password"
+                        }
                     }
                 },
                     modifier = Modifier
