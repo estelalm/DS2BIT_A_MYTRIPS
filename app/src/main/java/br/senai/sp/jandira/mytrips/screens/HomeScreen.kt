@@ -243,7 +243,7 @@ fun HomeScreen(navController: NavHostController) {
                     )
                 }
                 items(TripRepository().listAllTrips()) { trip ->
-                    if(searchState.value == "" || trip.destino.contains(searchState.value)){
+                    if(searchState.value == "" || trip.destino.lowercase().contains(searchState.value.lowercase())){
                         PastTripCard(
                             local = trip.destino,
                             data_chegada = trip.data_chegada,

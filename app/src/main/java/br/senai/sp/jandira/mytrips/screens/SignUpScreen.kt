@@ -53,6 +53,7 @@ import br.senai.sp.jandira.mytrips.gradiente
 import br.senai.sp.jandira.mytrips.gray
 import br.senai.sp.jandira.mytrips.lightGray
 import br.senai.sp.jandira.mytrips.purple
+import br.senai.sp.jandira.mytrips.repository.UserRepository
 import br.senai.sp.jandira.mytrips.ui.theme.Poppins
 
 @Composable
@@ -319,7 +320,12 @@ fun SignUpScreen(navController: NavHostController) {
 
         Button(
             onClick = {
-                      navController.navigate("login")
+                if(nameState.value != "" && phoneState.value != "" && emailState.value != "" && passwordState.value != ""){
+                    navController.navigate("login")
+                }else{
+                    Toast.makeText( null, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+                }
+
                       },
             modifier = Modifier
                 .fillMaxWidth()
