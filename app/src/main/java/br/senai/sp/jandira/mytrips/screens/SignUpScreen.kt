@@ -22,6 +22,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.outlined.RemoveRedEye
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -45,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -72,6 +74,9 @@ fun SignUpScreen(navController: NavHostController) {
         mutableStateOf("")
     }
     var over18State = remember{
+        mutableStateOf(false)
+    }
+    var showPasswordState = remember {
         mutableStateOf(false)
     }
 
@@ -264,6 +269,18 @@ fun SignUpScreen(navController: NavHostController) {
                 leadingIcon = {
                     Icon(Icons.Filled.Lock, contentDescription = "Password", modifier = Modifier.size(35.dp))
                 },
+                trailingIcon = {
+                    Icon(Icons.Outlined.RemoveRedEye,
+                        contentDescription = "Open eye: Show password",
+                        modifier = Modifier.clickable {
+                            if(showPasswordState.value){
+                                showPasswordState.value = false
+                            }else{
+                                showPasswordState.value = true
+                            }
+                        }
+                    )
+                },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedLeadingIconColor = Color(purple),
                     unfocusedContainerColor = Color.White,
@@ -278,7 +295,11 @@ fun SignUpScreen(navController: NavHostController) {
                 modifier = Modifier
                     .padding(top = 24.dp)
                     .fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if(showPasswordState.value){
+                    VisualTransformation.None
+                }else{
+                    PasswordVisualTransformation()
+                },
                 onValueChange = {
                     passwordState.value = it
                 }

@@ -17,14 +17,14 @@ class UserRepository {
         user1.image = R.drawable.susanna
 
         var user2 = User()
-        user1.id = 2
-        user1.username = "Susanna Hoffs"
-        user1.phone = "987654321"
-        user1.email = "susanna@email.com"
-        user1.password = "senha123"
-        user1.image = R.drawable.susanna
+        user2.id = 2
+        user2.username = "Susanna Hoffs"
+        user2.phone = "987654321"
+        user2.email = "susanna@email.com"
+        user2.password = "senha123"
+        user2.image = R.drawable.susanna
 
-        val users = listOf(user1)
+        val users = listOf(user1, user2)
         return users
     }
 
