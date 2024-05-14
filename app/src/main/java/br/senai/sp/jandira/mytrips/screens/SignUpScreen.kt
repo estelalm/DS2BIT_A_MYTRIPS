@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -54,12 +55,15 @@ import br.senai.sp.jandira.mytrips.R
 import br.senai.sp.jandira.mytrips.gradiente
 import br.senai.sp.jandira.mytrips.gray
 import br.senai.sp.jandira.mytrips.lightGray
+import br.senai.sp.jandira.mytrips.model.User
 import br.senai.sp.jandira.mytrips.purple
 import br.senai.sp.jandira.mytrips.repository.UserRepository
 import br.senai.sp.jandira.mytrips.ui.theme.Poppins
 
 @Composable
 fun SignUpScreen(navController: NavHostController) {
+
+    val userRepository = UserRepository(LocalContext.current)
 
     var nameState = remember {
         mutableStateOf("")
@@ -342,6 +346,17 @@ fun SignUpScreen(navController: NavHostController) {
         Button(
             onClick = {
                 if(nameState.value != "" && phoneState.value != "" && emailState.value != "" && passwordState.value != ""){
+
+                    val usuario = User(
+                        username = nameState.value,
+                        phone = phoneState.value,
+                        email = emailState.value,
+                        password = passwordState.value,
+                        image = null,
+                        over18 = over18State.value
+                    )
+
+                    userRepository.salvar(usuario)
                     navController.navigate("login")
                 }else{
                     Toast.makeText( null, "Preencha todos os campos", Toast.LENGTH_SHORT).show()

@@ -1,31 +1,24 @@
 package br.senai.sp.jandira.mytrips.repository
 
+import android.content.Context
 import br.senai.sp.jandira.mytrips.R
+import br.senai.sp.jandira.mytrips.dao.UserDb
 import br.senai.sp.jandira.mytrips.model.User
 
-class UserRepository {
+class UserRepository (context: Context) {
 
+    private val db = UserDb.getBancoDeDados(context).userDao()
 
-    fun listAllUsers () : List<User>{
+    fun salvar(user: User): Long{
+        return db.salvar(user)
+    }
 
-        var user1 = User()
-        user1.id = 1
-        user1.username = "Usuário"
-        user1.phone = "987654321"
-        user1.email = "user@email.com"
-        user1.password = "senha"
-        user1.image = R.drawable.susanna
+    fun buscarTodosOsUsuarios(): List<User>{
+        return db.listarTodosOsUsuarios()
+    }
 
-        var user2 = User()
-        user2.id = 2
-        user2.username = "Susanna Hoffs"
-        user2.phone = "987654321"
-        user2.email = "susanna@email.com"
-        user2.password = "senha123"
-        user2.image = R.drawable.susanna
-
-        val users = listOf(user1, user2)
-        return users
+    fun buscarUsuarioPeloId(id:Long): User{
+        return db.buscarUsuarioPeloId(id)
     }
 
 }

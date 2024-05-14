@@ -34,11 +34,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -50,6 +50,11 @@ import br.senai.sp.jandira.mytrips.ui.theme.Poppins
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
+
+    val userRepository = UserRepository(LocalContext.current)
+    val usuarios = userRepository.buscarTodosOsUsuarios()
+    println(usuarios)
+
     var emailState = remember {
         mutableStateOf("")
     }
@@ -185,8 +190,7 @@ MyTripsTheme {
                 Button(onClick =
                 {
 
-                    var userList = UserRepository().listAllUsers()
-                    userList.forEach {
+                    usuarios.forEach {
                         if(emailState.value == it.email && senhaState.value == it.password) {
                             navController.navigate("home")
                         }else{
@@ -241,14 +245,14 @@ MyTripsTheme {
 
 }
 
-@Preview (showSystemUi = true)
-@Composable
-fun LoginScreenPreview() {
-    Surface (
-        modifier = Modifier
-            .fillMaxSize(),
-        color = Color.White
-    ) {
-//    LoginScreen()
-    }
-}
+//@Preview (showSystemUi = true)
+//@Composable
+//fun LoginScreenPreview() {
+//    Surface (
+//        modifier = Modifier
+//            .fillMaxSize(),
+//        color = Color.White
+//    ) {
+////    LoginScreen()
+//    }
+//}
