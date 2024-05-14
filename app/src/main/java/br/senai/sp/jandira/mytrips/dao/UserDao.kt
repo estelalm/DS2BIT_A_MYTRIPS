@@ -16,4 +16,7 @@ interface UserDao {
     @Query("SELECT * FROM tbl_usuario WHERE id = :id")
     fun buscarUsuarioPeloId(id:Long):User
 
+    @Query("SELECT * FROM tbl_usuario WHERE email = :email AND password = :password")
+    fun buscarUsuarioPeloLogin(email:String, password:String):User
+
 }

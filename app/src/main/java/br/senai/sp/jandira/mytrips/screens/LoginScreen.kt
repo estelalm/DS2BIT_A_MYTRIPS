@@ -27,6 +27,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -42,6 +44,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import br.senai.sp.jandira.mytrips.R
 import br.senai.sp.jandira.mytrips.gray
 import br.senai.sp.jandira.mytrips.purple
 import br.senai.sp.jandira.mytrips.repository.UserRepository
@@ -52,8 +55,6 @@ import br.senai.sp.jandira.mytrips.ui.theme.Poppins
 fun LoginScreen(navController: NavHostController) {
 
     val userRepository = UserRepository(LocalContext.current)
-    val usuarios = userRepository.buscarTodosOsUsuarios()
-    println(usuarios)
 
     var emailState = remember {
         mutableStateOf("")
@@ -99,7 +100,7 @@ MyTripsTheme {
                     fontFamily = Poppins,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.height(70.dp))
-                Text(text = "Please sign in to continue.",
+                Text(text = stringResource(id = R.string.sign_in_message),
                     color = Color(gray),
                     fontFamily = Poppins
                 )
@@ -112,7 +113,7 @@ MyTripsTheme {
                 OutlinedTextField(
                     value = emailState.value,
                     label = {
-                        Text(text = "E-mail",
+                        Text(text = stringResource(id = R.string.email),
                             modifier = Modifier
                                 .padding(horizontal = 5.dp)
                                 .background(Color.White),
@@ -141,14 +142,14 @@ MyTripsTheme {
                 OutlinedTextField(
                     value = senhaState.value,
                     label = {
-                        Text(text = "Password",
+                        Text(text = stringResource(id = R.string.password),
                             modifier = Modifier
                                 .padding(horizontal = 5.dp)
                                 .background(Color.White),
                             fontFamily = Poppins,)
                     },
                     leadingIcon = {
-                        Icon(Icons.Filled.Lock, contentDescription = "Password", modifier = Modifier.size(35.dp))
+                        Icon(Icons.Filled.Lock, contentDescription = stringResource(id = R.string.password), modifier = Modifier.size(35.dp))
                     },
                     trailingIcon = {
                                    Icon(Icons.Outlined.RemoveRedEye,
@@ -189,14 +190,15 @@ MyTripsTheme {
 
                 Button(onClick =
                 {
+                    var usuario = userRepository.buscarUsuarioPeloLogin(emailState.value, senhaState.value)
+                    val usuarioId : Long = 0
 
-                    usuarios.forEach {
-                        if(emailState.value == it.email && senhaState.value == it.password) {
+                        if(usuario == null) {
+                                isErrorState.value = true
+                                mensagemErroState.value = "Incorrect email or password"
+                            } else{
+                            println(usuario)
                             navController.navigate("home")
-                        }else{
-                            isErrorState.value = true
-                            mensagemErroState.value = "Incorrect email or password"
-                        }
                     }
                 },
                     modifier = Modifier
@@ -220,8 +222,8 @@ MyTripsTheme {
                         Row (modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 24.dp), horizontalArrangement = Arrangement.End) {
-                            Text(text = "Don't have an account? ", fontSize = 13.sp, color = Color(gray), fontFamily = Poppins)
-                        Text(text = "Sign up", fontSize = 13.sp, color = Color(purple), fontFamily = Poppins, fontWeight = FontWeight.Bold,
+                            Text(text = stringResource(id = R.string.dont_have_account), fontSize = 13.sp, color = Color(gray), fontFamily = Poppins)
+                        Text(text = stringResource(id = R.string.sign_up), fontSize = 13.sp, color = Color(purple), fontFamily = Poppins, fontWeight = FontWeight.Bold,
                             modifier = Modifier.clickable {
                                 navController.navigate("sign up")
                             })

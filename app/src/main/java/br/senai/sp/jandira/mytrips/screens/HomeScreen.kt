@@ -53,6 +53,7 @@ import br.senai.sp.jandira.mytrips.lightPurple
 import br.senai.sp.jandira.mytrips.purple
 import br.senai.sp.jandira.mytrips.ui.theme.Poppins
 import androidx.compose.material3.Card
+import androidx.compose.ui.res.stringResource
 import br.senai.sp.jandira.mytrips.repository.CategorieRepository
 import br.senai.sp.jandira.mytrips.repository.TripRepository
 import br.senai.sp.jandira.mytrips.utility.simplificarData
@@ -72,7 +73,7 @@ fun HomeScreen(navController: NavHostController) {
         mutableStateOf("")
     }
     var categorieColorState = remember{
-        mutableStateOf("Mountain")
+        mutableStateOf(R.string.mountain)
     }
     Column (
         modifier = Modifier.fillMaxSize()
@@ -130,7 +131,7 @@ fun HomeScreen(navController: NavHostController) {
                                     .offset(y = 5.dp)
                             )
                             Text(
-                                text = "You're in Paris",
+                                text = stringResource(id = R.string.youre_in) + " Paris",
                                 color = Color.White,
                                 fontFamily = Poppins,
                                 letterSpacing = (-0.5).sp,
@@ -139,7 +140,7 @@ fun HomeScreen(navController: NavHostController) {
                             )
                         }
                         Text(
-                            text = "My Trips",
+                            text = stringResource(id = R.string.title),
                             color = Color.White,
                             fontFamily = Poppins,
                             fontWeight = FontWeight.Bold,
@@ -196,8 +197,8 @@ fun HomeScreen(navController: NavHostController) {
                                     .fillMaxSize(),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
-                                Image(painter = painterResource(id = it.image!!), contentDescription = "${it.local} Icon" )
-                                Text(text = it.local, color = Color.White, fontFamily = Poppins, fontSize = 15.sp)
+                                Image(painter = painterResource(id = it.image!!), contentDescription = "${stringResource(id = it.local)} Icon" )
+                                Text(text = stringResource(id = it.local), color = Color.White, fontFamily = Poppins, fontSize = 15.sp)
                             }
                         }
                     }
@@ -217,7 +218,7 @@ fun HomeScreen(navController: NavHostController) {
                 },
                 placeholder = {
                     Text(
-                        text = "Search your destiny",
+                        text = stringResource(id = R.string.search_your_destiny),
                         color = Color.Gray,
                         fontFamily = Poppins,
                         fontSize = 14.sp
@@ -235,7 +236,7 @@ fun HomeScreen(navController: NavHostController) {
             ){
                 item {
                     Text(
-                        text = "Past Trips",
+                        text = stringResource(id = R.string.past_trips),
                         modifier = Modifier.padding(top = 12.dp, bottom = 2.dp),
                         fontFamily = Poppins,
                         color = Color.DarkGray,
@@ -341,7 +342,7 @@ fun PastTripCard(local: String, data_chegada: LocalDate, data_partida: LocalDate
     }
 }
 @Composable
-fun CategorieCard(local: String, imagem: Int, color: Long, state : String){
+fun CategorieCard(local: Int, imagem: Int, color: Long, state : String){
     Card (
         modifier = Modifier
             .height(66.dp)
@@ -364,7 +365,7 @@ fun CategorieCard(local: String, imagem: Int, color: Long, state : String){
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(painter = painterResource(id = imagem), contentDescription = "$local Icon" )
-            Text(text = local, color = Color.White, fontFamily = Poppins, fontSize = 15.sp)
+            Text(text = stringResource(id = local), color = Color.White, fontFamily = Poppins, fontSize = 15.sp)
         }
     }
 }

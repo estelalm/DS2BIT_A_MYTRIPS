@@ -21,4 +21,8 @@ class UserRepository (context: Context) {
         return db.buscarUsuarioPeloId(id)
     }
 
+    fun buscarUsuarioPeloLogin(email:String, password:String): User{
+        return db.buscarUsuarioPeloLogin(email, password)
+    }
+
 }
