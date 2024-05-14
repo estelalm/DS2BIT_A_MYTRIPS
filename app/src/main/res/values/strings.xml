@@ -12,8 +12,9 @@
     <string name="phone">Phone</string>
     <string name="over_18">Over 18?</string>
     <string name="create_account">Create Account</string>
-    <string name="already_have_account">Already have an account?</string>
+    <string name="already_have_account">Already have an account? </string>
     <string name="youre_in">You\'re in </string>
+    <string name="categories">Categories </string>
     <string name="mountain">Mountain</string>
     <string name="snow">Snow</string>
     <string name="beach">Beach</string>

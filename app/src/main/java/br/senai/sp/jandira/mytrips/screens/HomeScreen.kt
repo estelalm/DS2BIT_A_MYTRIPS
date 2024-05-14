@@ -161,7 +161,7 @@ fun HomeScreen(navController: NavHostController) {
             .padding(horizontal = 8.dp))
         {
             Text(
-                text = "Categories",
+                text = stringResource(id = R.string.categories),
                 modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 2.dp),
                 fontFamily = Poppins,
                 color = Color.DarkGray

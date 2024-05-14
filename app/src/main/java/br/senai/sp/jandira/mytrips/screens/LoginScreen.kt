@@ -191,7 +191,6 @@ MyTripsTheme {
                 Button(onClick =
                 {
                     var usuario = userRepository.buscarUsuarioPeloLogin(emailState.value, senhaState.value)
-                    val usuarioId : Long = 0
 
                         if(usuario == null) {
                                 isErrorState.value = true
@@ -211,7 +210,7 @@ MyTripsTheme {
                     ),
                     shape = RoundedCornerShape(15.dp)
                 ) {
-                    Text(text = "SIGN IN",
+                    Text(text = stringResource(id = R.string.sign_in).uppercase(),
                         fontFamily = Poppins,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp)

@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -108,7 +109,7 @@ fun SignUpScreen(navController: NavHostController) {
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.height(50.dp))
-            Text(text = "Create a new account",
+            Text(text = stringResource(id = R.string.create_new_account),
                 color = Color(gray),
                 fontFamily = Poppins,
                 fontSize = 14.sp)
@@ -162,7 +163,7 @@ fun SignUpScreen(navController: NavHostController) {
                 enabled = true,
                 readOnly = false,
                 label = {
-                    Text(text = "Username",
+                    Text(text = stringResource(id = R.string.username),
                         modifier = Modifier
                             .padding(horizontal = 5.dp)
                             .background(Color.White),
@@ -195,14 +196,14 @@ fun SignUpScreen(navController: NavHostController) {
             OutlinedTextField(
                 value = phoneState.value,
                 label = {
-                    Text(text = "Phone",
+                    Text(text = stringResource(id = R.string.phone),
                         modifier = Modifier
                             .padding(horizontal = 5.dp)
                             .background(Color.White),
                         fontFamily = Poppins,)
                 },
                 leadingIcon = {
-                    Image(painter = painterResource(id = R.drawable.celular), contentDescription = "Celular", modifier = Modifier.size(32.dp))
+                    Image(painter = painterResource(id = R.drawable.celular), contentDescription = stringResource(id = R.string.phone), modifier = Modifier.size(32.dp))
                 },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedLeadingIconColor = Color(purple),
@@ -228,7 +229,7 @@ fun SignUpScreen(navController: NavHostController) {
             OutlinedTextField(
                 value = emailState.value,
                 label = {
-                    Text(text = "E-mail",
+                    Text(text = stringResource(id = R.string.email),
                         modifier = Modifier
                             .padding(horizontal = 5.dp)
                             .background(Color.White),
@@ -264,7 +265,7 @@ fun SignUpScreen(navController: NavHostController) {
                 value = passwordState.value,
                 enabled = true,
                 label = {
-                    Text(text = "Password",
+                    Text(text = stringResource(id = R.string.password),
                         modifier = Modifier
                             .padding(horizontal = 5.dp)
                             .background(Color.White),
@@ -337,7 +338,7 @@ fun SignUpScreen(navController: NavHostController) {
                 )
             }
             Text(
-                text = "Over 18?",
+                text = stringResource(id = R.string.over_18),
                 fontFamily = Poppins,
                 modifier = Modifier.padding(start = 12.dp)
             )
@@ -373,7 +374,7 @@ fun SignUpScreen(navController: NavHostController) {
             shape = RoundedCornerShape(15.dp)
         ) {
             Text(
-                text = "CREATE ACCOUNT",
+                text = stringResource(id = R.string.create_account).uppercase(),
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
@@ -383,8 +384,8 @@ fun SignUpScreen(navController: NavHostController) {
         Row (modifier = Modifier
             .fillMaxWidth()
             .padding(end = 20.dp, top = 12.dp), horizontalArrangement = Arrangement.End) {
-            Text(text = "Already have an account? ", fontSize = 12.sp, color = Color(gray), fontFamily = Poppins)
-            Text(text = "Sign in", fontSize = 12.sp, color = Color(purple), fontFamily = Poppins, fontWeight = FontWeight.Bold,
+            Text(text = stringResource(id = R.string.already_have_account), fontSize = 12.sp, color = Color(gray), fontFamily = Poppins)
+            Text(text = stringResource(id = R.string.sign_in), fontSize = 12.sp, color = Color(purple), fontFamily = Poppins, fontWeight = FontWeight.Bold,
                 modifier = Modifier.clickable { navController.navigate("login") })
         }
         Spacer(modifier = Modifier.height(100.dp))
