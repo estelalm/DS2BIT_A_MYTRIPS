@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">My Trips</string>
+    <string name="title">My Trips</string>
+    <string name="sign_in_message">Please sign in to continue</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="create_new_account">Create a new account</string>
+    <string name="username">Username</string>
+    <string name="phone">Phone</string>
+    <string name="over_18">Over 18?</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="youre_in">You\'re in </string>
+    <string name="mountain">Mountain</string>
+    <string name="snow">Snow</string>
+    <string name="beach">Beach</string>
+    <string name="search_your_destiny">Search your destiny</string>
+    <string name="past_trips">Past Trips</string>
 </resources>
