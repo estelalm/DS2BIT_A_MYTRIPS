@@ -3,6 +3,12 @@ package br.senai.sp.jandira.mytrips
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -31,7 +37,9 @@ class MainActivity : ComponentActivity() {
                    val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = "login"
+                        startDestination = "login",
+                        enterTransition = { slideInHorizontally () },
+                        exitTransition = { slideOutHorizontally() }
                     ){
                         composable(route = "login"){ LoginScreen(navController)}
                         composable(route = "sign up"){ SignUpScreen(navController)}

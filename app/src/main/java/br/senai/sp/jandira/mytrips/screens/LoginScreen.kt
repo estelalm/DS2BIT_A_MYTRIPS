@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.mytrips.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -51,6 +52,7 @@ import br.senai.sp.jandira.mytrips.repository.UserRepository
 import br.senai.sp.jandira.mytrips.ui.theme.MyTripsTheme
 import br.senai.sp.jandira.mytrips.ui.theme.Poppins
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun LoginScreen(navController: NavHostController) {
 
